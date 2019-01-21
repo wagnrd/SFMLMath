@@ -61,7 +61,7 @@ namespace sf
     }
 
     /*
-     * Returns the scalar product of two given vectors
+     * Returns the dot product of two given vectors
      */
     template <typename T>
     double operator*( const T& vec1, const T& vec2 )
