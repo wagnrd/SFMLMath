@@ -21,4 +21,4 @@ Simple vector math library for SFML. It uses the built-in vector types and puts 
 ## Getting started
 See the [wiki](https://github.com/wagnrd/SFMLMath/wiki) for further instructions and a full documentation of every function.
 
-Or look at [Pong](https://github.com/wagnrd/Pong) - an actual project using SFMLMath - to see further usages of this library.
+Or look at the actual project [Pong](https://github.com/wagnrd/Pong) to see further usages of this library.
