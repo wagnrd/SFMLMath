@@ -17,7 +17,3 @@ Simple vector math library for SFML. It uses the built-in vector types and puts 
 #### Utility functions
 * Square function
 * Radians and Degrees conversions
-
-## Dependencies
-
-[Boost 1.37.0](https://www.boost.org/doc/libs/1_37_0/libs/math/doc/sf_and_dist/html/math_toolkit/toolkit/internals1/constants.html) (to get PI)
