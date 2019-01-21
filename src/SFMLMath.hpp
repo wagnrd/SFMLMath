@@ -5,12 +5,12 @@
 #ifndef PONG_SFMLMATH_HPP
 #define PONG_SFMLMATH_HPP
 
-#include <boost/math/constants/constants.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <cmath>
 
 namespace sf
 {
-    static constexpr double PI = boost::math::constants::pi<double>();
+    static const auto PI = acos( -1 );
 
     /*
      * Vector addition
