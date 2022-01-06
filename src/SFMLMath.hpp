@@ -106,7 +106,7 @@ namespace sf
     }
 
     /*
-     * Returns a inverted vector
+     * Returns an inverted vector
      */
     template <typename T>
     inline T getInverted( const T& vec )
@@ -202,10 +202,9 @@ namespace sf
     inline T& rotate( T& vec, double angle )
     {
         const double angleRad = degToRad( -angle );
-        const double newX     = vec.x * cos( angleRad ) - vec.y * sin( angleRad );
-        const double newY     = vec.x * sin( angleRad ) + vec.y * cos( angleRad );
-        vec.x = newX;
-        vec.y = newY;
+        
+        vec.x = vec.x * cos( angleRad ) - vec.y * sin( angleRad );
+        vec.y = vec.x * sin( angleRad ) + vec.y * cos( angleRad );
 
         return vec;
     }
