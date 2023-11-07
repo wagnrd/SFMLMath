@@ -8,14 +8,25 @@
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 
+
 namespace sf
 {
+
+    template <typename TVector>
+    concept VectorLike = requires(TVector Vector) {
+        { Vector.x } -> std::convertible_to<float>;
+        { Vector.y } -> std::convertible_to<float>;
+    };
+
+    template <typename T>
+    concept IsScalar = std::is_scalar<T>::value;
+
     static const auto PI = acos( -1 );
 
     /*
      * Vector addition
      */
-    template <typename T>
+    template <VectorLike T>
     T operator+( const T& vec1, const T& vec2 )
     {
         const auto newX = vec1.x + vec2.x;
@@ -27,7 +38,7 @@ namespace sf
     /*
      * Vector subtraction
      */
-    template <typename T>
+    template <VectorLike T>
     T operator-( const T& vec1, const T& vec2 )
     {
         const auto newX = vec1.x - vec2.x;
@@ -39,7 +50,7 @@ namespace sf
     /*
      * Scalar multiplication
      */
-    template <typename T, typename U>
+    template <VectorLike T, IsScalar U>
     T operator*( const T& vec, U scalar )
     {
         const auto newX = vec.x * scalar;
@@ -51,7 +62,7 @@ namespace sf
     /*
      * Scalar multiplication
      */
-    template <typename U, typename T>
+    template <IsScalar U, VectorLike T>
     T operator*( U scalar, const T& vec )
     {
         const auto newX = vec.x * scalar;
@@ -63,7 +74,7 @@ namespace sf
     /*
      * Returns the dot product of two given vectors
      */
-    template <typename T>
+    template <VectorLike T>
     double operator*( const T& vec1, const T& vec2 )
     {
         return vec1.x * vec2.x + vec1.y * vec2.y;
@@ -72,7 +83,7 @@ namespace sf
     /*
      * Returns the square of a given value
      */
-    template <typename T>
+    template <IsScalar T>
     inline T sqr( T value )
     {
         return value * value;
@@ -81,7 +92,7 @@ namespace sf
     /*
      * Converts radians to degrees
      */
-    template <typename T>
+    template <IsScalar T>
     inline double radToDeg( T radians )
     {
         return radians * 180.0 / PI;
@@ -90,7 +101,7 @@ namespace sf
     /*
      * Converts degrees to radian
      */
-    template <typename T>
+    template <IsScalar T>
     inline double degToRad( T degree )
     {
         return degree / 180.0 * PI;
@@ -99,7 +110,7 @@ namespace sf
     /*
      * Returns the length of a given vector
      */
-    template <typename T>
+    template <VectorLike T>
     inline double getLength( const T& vec )
     {
         return sqrt( sqr( vec.x ) + sqr( vec.y ) );
@@ -108,7 +119,7 @@ namespace sf
     /*
      * Returns an inverted vector
      */
-    template <typename T>
+    template <VectorLike T>
     inline T getInverted( const T& vec )
     {
         return T( -vec.x, -vec.y );
@@ -117,7 +128,7 @@ namespace sf
     /*
      * Inverts a given vector in-place
      */
-    template <typename T>
+    template <VectorLike T>
     inline T& invert( T& vec )
     {
         vec.x = -vec.x;
@@ -129,7 +140,7 @@ namespace sf
     /*
      * Returns a normalized vector
      */
-    template <typename T>
+    template <VectorLike T>
     inline T getNormalized( const T& vec )
     {
         const double length = getLength( vec );
@@ -142,7 +153,7 @@ namespace sf
     /*
      * Normalizes a given vector in-place
      */
-    template <typename T>
+    template <VectorLike T>
     inline T& normalize( T& vec )
     {
         const double length = getLength( vec );
@@ -153,9 +164,20 @@ namespace sf
     }
 
     /*
+     * Returns the distance between two given points
+     */
+    template <VectorLike T>
+    float distance(const T &point1, const T &point2) {
+        float dx = point2.x - point1.x;
+        float dy = point2.y - point1.y;
+        return std::sqrt(dx * dx + dy * dy);
+    }
+
+
+    /*
      * Returns the angle of a given vector from 0 to 360° depending its direction on the unit circle
      */
-    template <typename T>
+    template <VectorLike T>
     inline double getRotationAngle( const T& vec )
     {
         const T      normalizedVec = getNormalized( vec );
@@ -174,7 +196,7 @@ namespace sf
     /*
      * Returns the angle in degrees between two given vectors
      */
-    template <typename T>
+    template <VectorLike T>
     inline double getAngleBetween( const T& vec1, const T& vec2 )
     {
         const double angle = acos( ( vec1 * vec2 ) / ( getLength( vec1 ) * getLength( vec2 ) ) );
@@ -185,7 +207,7 @@ namespace sf
     /*
      * Returns a vector rotated with a given angle in degrees
      */
-    template <typename T>
+    template <VectorLike T>
     inline void getRotated( const T& vec, double angle )
     {
         const double angleRad = degToRad( -angle );
@@ -198,7 +220,7 @@ namespace sf
     /*
      * Rotates a vector in-place with a given angle in degrees
      */
-    template <typename T>
+    template <VectorLike T>
     inline T& rotate( T& vec, double angle )
     {
         const double angleRad = degToRad( -angle );
@@ -208,5 +230,28 @@ namespace sf
 
         return vec;
     }
+
+    /*
+     * Returns the projection of a vector on a given axis
+     */
+    template <VectorLike T>
+    T projection( const T& vec, const T& axis ) {
+        T NullVector(0, 0);
+        if (axis == NullVector) {
+            return NullVector;
+        }
+        float k = (vec * axis) / (axis * axis);
+        return k * axis;
+    }
+
+
+    /**
+     * Returns the reflection of a vector on a given normal
+     */
+    template <VectorLike T>
+    T reflect(const T& vec, const T& normal) {
+        return  normal * 2.0 * vec * normal;
+    }
+
 }
 #endif //PONG_SFMLMATH_HPP
