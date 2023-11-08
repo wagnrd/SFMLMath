@@ -253,5 +253,17 @@ namespace sf
         return  normal * 2.0 * vec * normal;
     }
 
+
+    /**
+     * Returns the normal of a vector between two points
+     */
+    template <VectorLike T>
+    T normalBetweenPoints(const T &point1, const T &point2) {
+        T direction = point2 - point1;
+        T normal = {direction.y, -direction.x};
+        return sf::normalize(normal);
+    }
+
+
 }
 #endif //PONG_SFMLMATH_HPP
