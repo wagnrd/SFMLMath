@@ -13,6 +13,9 @@ Simple vector math library for SFML. It uses the built-in vector types and puts 
 * Angle between two vectors (in degrees)
 * Angle of the vectors direction depending on the unit circle (in degrees)
 * Rotate vector
+* Vector projection on axis
+* Vector reflection on normal
+* Normal on vector between two points
 
 #### Utility functions
 * Square function
